@@ -941,63 +941,105 @@
   }
 
   function generateReportText() {
-      let ventes = JSON.parse(localStorage.getItem("ofc_ventes_v3")) || [];
-      let depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
+    const ventes = JSON.parse(localStorage.getItem("ofc_ventes_v3") || "[]");
+    const depenses = JSON.parse(localStorage.getItem("ofc_depenses") || "[]");
   
-      let totalVentes = ventes.reduce((a, v) => a + Number(v.montant), 0);
-      let totalDepenses = depenses.reduce((a, d) => a + Number(d.montant), 0);
+    const totalVentes = ventes.reduce((s, v) => s + (Number(v.montant) || 0), 0);
+    const totalDepenses = depenses.reduce((s, d) => s + (Number(d.montant) || 0), 0);
+    const benefice = totalVentes - totalDepenses;
+    const igs = benefice > 0 ? Math.round(benefice * 0.05) : 0;
+    const cac = Math.round(igs * 0.10);
+    const precompte = igs + cac;
+    const solde = benefice - precompte;
   
-      let benefice = totalVentes - totalDepenses;
-      let igs = Math.round(benefice * 0.05);
-      let cac = Math.round(igs * 0.10);
-      let precompte = igs + cac;
-      let solde = benefice - precompte;
+    const lines = [];
   
-      let text = `=== OFC Starter – Rapport automatique ===
+    // En-tête
+    lines.push("=== OFC Starter – Rapport automatique ===");
+    lines.push("");
+    
+    // -------------------------------------------------
+    // 1) PAGE VENTES -> CSV
+    // -------------------------------------------------
+    lines.push("VENTES (CSV)");
+    lines.push("date;description;montant_fcfa;mode_paiement");
   
-  --- VENTES ---
-  ${ventes.length === 0 ? "Aucune vente enregistrée." :
-  ventes.map(v => `• ${v.nom} – ${v.montant} FCFA (${v.date})`).join("\n")
-  }
+    if (ventes.length === 0) {
+      lines.push("# aucune vente");
+    } else {
+      ventes.forEach(v => {
+        const date = v.date || formatDateFromTimestamp(v.ts);
+        const desc = (v.description || "").replace(/"/g, '""'); // protéger les guillemets
+        const montant = Number(v.montant) || 0;
+        const mode = (v.mode || "").replace(/;/g, ",");
+        lines.push(`${date};"${desc}";${montant};${mode}`);
+      });
+    }
   
-  --- DÉPENSES ---
-  ${depenses.length === 0 ? "Aucune dépense enregistrée." :
-  depenses.map(d => `• ${d.montant} FCFA – ${d.description || "Sans description"} (${d.date})`).join("\n")
-  }
+    lines.push(""); // ligne vide
   
-  --- RÉSUMÉ AUTOMATIQUE ---
-  Total ventes : ${totalVentes} FCFA
-  Total dépenses : ${totalDepenses} FCFA
-  Bénéfice brut : ${benefice} FCFA
-  IGS (5%) : ${igs} FCFA
-  CAC (10% de l'IGS) : ${cac} FCFA
-  Total précompte : ${precompte} FCFA
-  Solde net : ${solde} FCFA
-  `;
+    // -------------------------------------------------
+    // 2) PAGE DEPENSES -> CSV
+    // -------------------------------------------------
+    lines.push("DEPENSES (CSV)");
+    lines.push("date;description;montant_fcfa");
   
-      return text;
+    if (depenses.length === 0) {
+      lines.push("# aucune depense");
+    } else {
+      depenses.forEach(d => {
+        const date = formatDateFromTimestamp(d.ts);
+        const desc = (d.desc || "").replace(/"/g, '""');
+        const montant = Number(d.montant) || 0;
+        lines.push(`${date};"${desc}";${montant}`);
+      });
+    }
+  
+    lines.push("");
+  
+    // -------------------------------------------------
+    // 3) PAGE RESUME -> CSV
+    // -------------------------------------------------
+    lines.push("RESUME (CSV)");
+    lines.push("cle;valeur_fcfa");
+    lines.push(`total_ventes;${totalVentes}`);
+    lines.push(`total_depenses;${totalDepenses}`);
+    lines.push(`benefice_brut;${benefice}`);
+    lines.push(`igs_5pct;${igs}`);
+    lines.push(`cac_10pct_igs;${cac}`);
+    lines.push(`total_precompte;${precompte}`);
+    lines.push(`solde_net;${solde}`);
+  
+    return lines.join("\n");
   }
 
   function exportTXT() {
-      const content = generateReportText();
-      const blob = new Blob([content], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
+    const content = generateReportText();
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
   
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "ofc_starter_rapport.txt";
-      link.click();
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ofc_starter_rapport.csv.txt"; // on peut garder .txt, le contenu est CSV
+    a.click();
   
-      URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url);
   }
-
+  
   function shareWhatsApp() {
     const content = generateReportText();
     const encoded = encodeURIComponent(content);
+    const url = "https://wa.me/?text=" + encoded;
+    window.open(url, "_blank");
+  }
 
-    const whatsappURL = "https://wa.me/?text=" + encoded;
-    window.open(whatsappURL, "_blank");
-}
+  function formatDateFromTimestamp(ts) {
+    if (!ts) return "";
+    const d = new Date(ts);
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${d.getFullYear()}-${m}-${day}`;
+  }
 
 </script>
 
