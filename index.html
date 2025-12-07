@@ -240,6 +240,45 @@
       font-size: 15px;
     }
 
+    .resume-card {
+      background: #1e293b;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      margin-top: 20px;
+    }
+    
+    .resume-card h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    
+    .resume-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      color: #e2e8f0;
+      font-size: 16px;
+    }
+    
+    .resume-row strong {
+      color: #f1f5f9;
+    }
+    
+    .resume-row.final strong {
+      font-size: 18px;
+      color: #38bdf8;
+    }
+    
+    .resume-card hr {
+      border: 0;
+      border-top: 1px solid #334155;
+      margin: 14px 0;
+    }
+
   </style>
 </head>
 <body>
@@ -310,7 +349,24 @@
   <!-- PAGE 3 : RÉSUMÉ -->
   <div id="page-resume" class="page">
     <h2>Résumé</h2>
-    <div class="placeholder">Calcul automatique (étape 6)</div>
+    <div class="resume-card">
+      <h2>Calcul automatique</h2>
+    
+      <div class="resume-row"><span>Total ventes :</span><strong id="res-ventes">0 FCFA</strong></div>
+      <div class="resume-row"><span>Total dépenses :</span><strong id="res-depenses">0 FCFA</strong></div>
+    
+      <hr>
+    
+      <div class="resume-row"><span>Bénéfice brut :</span><strong id="res-benefice">0 FCFA</strong></div>
+      <div class="resume-row"><span>IGS (5%) :</span><strong id="res-igs">0 FCFA</strong></div>
+      <div class="resume-row"><span>CAC (10%) :</span><strong id="res-cac">0 FCFA</strong></div>
+    
+      <hr>
+    
+      <div class="resume-row"><span>Total précompte :</span><strong id="res-precompte">0 FCFA</strong></div>
+      <div class="resume-row final"><span>Solde net :</span><strong id="res-solde">0 FCFA</strong></div>
+    </div>
+
   </div>
 
   <!-- NAVIGATION BASSE -->
@@ -420,6 +476,43 @@
     
       renderDepenses();
     });
+
+
+    // Calcul du résumé --------------------------------------------------------
+
+    function calculerResume() {
+      // Récupération des ventes
+      const ventes = JSON.parse(localStorage.getItem("ofc_ventes")) || {};
+      let totalVentes = 0;
+      Object.values(ventes).forEach(qtt => {
+        // 1 vente = 1000 FCFA (sera modifiable plus tard)
+        totalVentes += qtt * 1000;
+      });
+    
+      // Récupération dépenses
+      const depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
+      const totalDepenses = depenses.reduce((sum, d) => sum + d.montant, 0);
+    
+      // Calculs fiscaux
+      const benefice = totalVentes - totalDepenses;
+      const igs = Math.max(0, benefice * 0.05);
+      const cac = Math.max(0, benefice * 0.10);
+      const precompte = igs + cac;
+      const solde = benefice - precompte;
+    
+      // Mise à jour de l'UI
+      document.getElementById("res-ventes").textContent = totalVentes.toLocaleString() + " FCFA";
+      document.getElementById("res-depenses").textContent = totalDepenses.toLocaleString() + " FCFA";
+      document.getElementById("res-benefice").textContent = benefice.toLocaleString() + " FCFA";
+      document.getElementById("res-igs").textContent = igs.toLocaleString() + " FCFA";
+      document.getElementById("res-cac").textContent = cac.toLocaleString() + " FCFA";
+      document.getElementById("res-precompte").textContent = precompte.toLocaleString() + " FCFA";
+      document.getElementById("res-solde").textContent = solde.toLocaleString() + " FCFA";
+    }
+    
+    // Calcul automatique chaque fois qu’on change de page
+    window.addEventListener("hashchange", calculerResume);
+    window.addEventListener("load", calculerResume);
 
   </script>
 
