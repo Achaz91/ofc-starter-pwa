@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>OFC Starter – Étape 2</title>
+  <title>OFC Starter – PWA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f766e">
 
@@ -10,517 +10,515 @@
   <link rel="icon" href="./icons/icon-192.png">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: system-ui, sans-serif;
-      background: #0f172a;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #020617;
       color: #f8fafc;
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      min-height: 100vh;
     }
 
-    /* Conteneur des pages */
-    .page {
-      display: none;
-      padding: 20px;
+    /* Conteneur global type “app mobile” */
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #020617;
+    }
+
+    header {
+      padding: 16px 20px 8px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    main {
       flex: 1;
+      padding: 0 16px 10px;
       overflow-y: auto;
     }
 
+    /* Pages */
+    .page {
+      display: none;
+      padding-bottom: 12px;
+    }
     .page.active {
       display: block;
     }
 
-    /* Barre de navigation */
-    .nav {
-      display: flex;
-      background: #1e293b;
-      border-top: 1px solid #334155;
+    h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 20px;
     }
 
+    /* NAV BASSE */
+    .nav {
+      display: flex;
+      background: #020617;
+      border-top: 1px solid #1e293b;
+    }
     .nav button {
       flex: 1;
-      padding: 12px 0;
+      padding: 10px 0 12px;
       font-size: 14px;
       border: none;
       background: transparent;
       color: #94a3b8;
+      cursor: pointer;
     }
-
     .nav button.active {
-      color: #fff;
+      color: #0ea5e9;
       border-top: 3px solid #0ea5e9;
     }
 
-    h2 {
-      margin-top: 0;
-      color: #f1f5f9;
+    /* CARTE GÉNÉRIQUE */
+    .card {
+      background: #0f172a;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.45);
     }
 
-    .placeholder {
-      padding: 16px;
-      background: #1e293b;
-      border-radius: 8px;
-      margin-top: 12px;
-      opacity: 0.7;
-    }
-
-        /* Grille des produits */
+    /* VENTES : grille produits */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 16px;
-      margin-top: 10px;
     }
-    
+
     .product {
-      background: #1e293b;
+      background: #111827;
       padding: 10px;
-      border-radius: 12px;
+      border-radius: 14px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.15s ease, background 0.15s ease;
     }
-    
-    .product:hover {
-      transform: translateY(-4px);
-      background: #243449;
-    }
-    
+
     .product img {
       width: 100%;
       height: 100px;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: 10px;
+      display: block;
     }
-    
+
     .product span {
       display: block;
       margin-top: 8px;
       font-size: 14px;
-      color: #e2e8f0;
+      color: #e5e7eb;
+    }
+
+    .product small {
+      display: block;
+      font-size: 12px;
+      color: #93c5fd;
+      margin-top: 2px;
     }
 
     .product.clicked {
-      transform: scale(0.92);
-      background: #334155;
-      transition: 0.1s;
+      transform: scale(0.94);
+      background: #1f2937;
     }
 
-    .expense-form {
-      background: #1e293b;
-      padding: 16px;
-      border-radius: 12px;
-    }
-    
-    .expense-form label {
-      display: block;
-      margin-top: 12px;
-      font-size: 14px;
-      color: #e2e8f0;
-    }
-    
-    .expense-form input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: none;
-      background: #334155;
-      color: #fff;
-    }
-    
-    #btn-add-depense {
-      width: 100%;
-      margin-top: 16px;
-      padding: 12px;
-      border: none;
-      background: #0ea5e9;
-      color: #fff;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-    
-    #btn-add-depense:hover {
-      background: #0284c7;
-    }
-    
-    .expense-list {
-      margin-top: 20px;
-    }
-    
-    .expense-item {
-      padding: 10px;
-      background: #0f172a;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #1e293b;
-    }
-    
-    .expense-item span {
-      font-size: 14px;
-      color: #cbd5e1;
-    }
-
-    /* Carte centrale */
+    /* DÉPENSES */
     .expense-card {
-      background: #1e293b;
+      background: #0f172a;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 14px;
       max-width: 420px;
-      margin: 0 auto;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      margin: 0 auto 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.45);
     }
-    
-    /* Titre */
+
     .expense-card h3 {
       margin-top: 0;
+      margin-bottom: 18px;
       text-align: center;
       font-size: 18px;
-      margin-bottom: 20px;
-      color: #f1f5f9;
     }
-    
-    /* Labels */
+
     .expense-card label {
       display: block;
       font-size: 14px;
       margin-bottom: 6px;
       color: #e2e8f0;
     }
-    
-    /* Input fields */
+
     .expense-card input {
       width: 100%;
-      padding: 12px;
+      padding: 11px;
       border-radius: 8px;
-      border: 1px solid #334155;
-      background: #0f172a;
-      color: white;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #f9fafb;
       margin-bottom: 14px;
       font-size: 15px;
-      box-sizing: border-box;
     }
-    
-    /* Bouton */
+
     #btn-add-depense {
       width: 100%;
-      padding: 12px;
-      border: none;
+      padding: 11px;
       border-radius: 8px;
+      border: none;
       background: linear-gradient(90deg, #0284c7, #0ea5e9);
-      font-size: 15px;
       color: #fff;
-      cursor: pointer;
+      font-size: 15px;
       font-weight: 500;
-      transition: 0.2s;
+      cursor: pointer;
+      transition: 0.15s ease;
     }
-    
+
     #btn-add-depense:hover {
       transform: scale(1.02);
       background: linear-gradient(90deg, #0369a1, #0284c7);
     }
-    
-    /* Liste des dépenses */
+
     .expense-list {
       max-width: 420px;
       margin: 0 auto;
     }
-    
+
     .expense-item {
-      padding: 14px;
-      background: #1e293b;
+      padding: 12px;
+      background: #0f172a;
       border-radius: 10px;
-      margin-bottom: 12px;
-      border: 1px solid #334155;
-      color: #cbd5e1;
-      font-size: 15px;
+      margin-bottom: 10px;
+      border: 1px solid #1f2937;
+      color: #e5e7eb;
+      font-size: 14px;
     }
 
+    /* RÉSUMÉ */
     .resume-card {
-      background: #1e293b;
-      max-width: 440px;
-      margin: 0 auto;
+      background: #0f172a;
+      border-radius: 18px;
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      margin-top: 20px;
+      max-width: 440px;
+      margin: 10px auto 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.45);
     }
-    
+
     .resume-card h2 {
-      text-align: center;
       margin-top: 0;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
+      text-align: center;
+      font-size: 20px;
     }
-    
+
     .resume-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 6px 0;
+      font-size: 14px;
       color: #e2e8f0;
-      font-size: 16px;
-    }
-    
-    .resume-row strong {
-      color: #f1f5f9;
-    }
-    
-    .resume-row.final strong {
-      font-size: 18px;
-      color: #38bdf8;
-    }
-    
-    .resume-card hr {
-      border: 0;
-      border-top: 1px solid #334155;
-      margin: 14px 0;
     }
 
+    .resume-row strong {
+      color: #f9fafb;
+    }
+
+    .resume-row.final strong {
+      font-size: 16px;
+      color: #38bdf8;
+    }
+
+    .resume-card hr {
+      border: 0;
+      border-top: 1px solid #1f2937;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding-left: 12px;
+      }
+      main {
+        padding: 0 12px 8px;
+      }
+    }
   </style>
 </head>
 <body>
+<div class="app">
+  <header>
+    <h1>OFC Starter</h1>
+  </header>
 
-  <!-- PAGE 1 : VENTES -->
-  <div id="page-ventes" class="page active">
-    <h2>Ventes</h2>
-    <div class="product-grid">
-    
-    <div class="product" data-name="Chaussures Homme">
-      <img src="./products/man_shoes.webp" alt="Chaussures homme">
-      <span>Chaussures Homme</span>
-    </div>
-    
-    <div class="product" data-name="Chaussures Femme">
-      <img src="./products/woman_shoes.jpeg" alt="Chaussures femme">
-      <span>Chaussures Femme</span>
-    </div>
-    
-    <div class="product" data-name="Sac Homme">
-      <img src="./products/man_bag.webp" alt="Sac homme">
-      <span>Sac Homme</span>
-    </div>
-    
-    <div class="product" data-name="Parfum Homme">
-      <img src="./products/man_perfum.webp" alt="Parfum homme">
-      <span>Parfum Homme</span>
-    </div>
-    
-    <div class="product" data-name="Sac Femme">
-      <img src="./products/woman_bag.webp" alt="Sac femme">
-      <span>Sac Femme</span>
-    </div>
-    
-    <div class="product" data-name="Parfum Femme">
-      <img src="./products/woman_parfum.webp" alt="Parfum femme">
-      <span>Parfum Femme</span>
-    </div>
+  <main>
+    <!-- PAGE VENTES -->
+    <section id="page-ventes" class="page active">
+      <h2>Ventes</h2>
+      <div class="card">
+        <div class="product-grid">
 
-</div>
+          <div class="product" data-name="Chaussures Homme" data-price="10000">
+            <img src="./products/man_shoes.webp" alt="Chaussures homme">
+            <span>Chaussures Homme</span>
+            <small>10 000 FCFA</small>
+          </div>
 
-  </div>
+          <div class="product" data-name="Chaussures Femme" data-price="12000">
+            <img src="./products/woman_shoes.jpeg" alt="Chaussures femme">
+            <span>Chaussures Femme</span>
+            <small>12 000 FCFA</small>
+          </div>
 
-  <!-- PAGE 2 : DÉPENSES -->
-  <div id="page-depenses" class="page">
-    <h2>Dépenses</h2>
+          <div class="product" data-name="Sac Homme" data-price="15000">
+            <img src="./products/man_bag.webp" alt="Sac homme">
+            <span>Sac Homme</span>
+            <small>15 000 FCFA</small>
+          </div>
+
+          <div class="product" data-name="Parfum Homme" data-price="20000">
+            <img src="./products/man_perfum.webp" alt="Parfum homme">
+            <span>Parfum Homme</span>
+            <small>20 000 FCFA</small>
+          </div>
+
+          <div class="product" data-name="Sac Femme" data-price="18000">
+            <img src="./products/woman_bag.webp" alt="Sac femme">
+            <span>Sac Femme</span>
+            <small>18 000 FCFA</small>
+          </div>
+
+          <div class="product" data-name="Parfum Femme" data-price="25000">
+            <img src="./products/woman_parfum.webp" alt="Parfum femme">
+            <span>Parfum Femme</span>
+            <small>25 000 FCFA</small>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE DÉPENSES -->
+    <section id="page-depenses" class="page">
+      <h2>Dépenses</h2>
+
       <div class="expense-card">
-
         <h3>Ajouter une dépense</h3>
-      
+
         <label>Montant (FCFA)</label>
         <input id="depense-montant" type="number" placeholder="Ex : 1500">
-      
+
         <label>Description (optionnel)</label>
         <input id="depense-desc" type="text" placeholder="Ex : Transport">
-      
+
         <button id="btn-add-depense">Ajouter la dépense</button>
-      
       </div>
-      
+
       <h3>Dépenses enregistrées</h3>
       <div class="expense-list" id="expense-list"></div>
+    </section>
 
+    <!-- PAGE RÉSUMÉ -->
+    <section id="page-resume" class="page">
+      <h2>Résumé</h2>
+
+      <div class="resume-card">
+        <h2>Calcul automatique</h2>
+
+        <div class="resume-row"><span>Total ventes :</span><strong id="res-ventes">0 FCFA</strong></div>
+        <div class="resume-row"><span>Total dépenses :</span><strong id="res-depenses">0 FCFA</strong></div>
+
+        <hr>
+
+        <div class="resume-row"><span>Bénéfice brut :</span><strong id="res-benefice">0 FCFA</strong></div>
+        <div class="resume-row"><span>IGS (5%) :</span><strong id="res-igs">0 FCFA</strong></div>
+        <div class="resume-row"><span>CAC (10% de l'IGS) :</span><strong id="res-cac">0 FCFA</strong></div>
+
+        <hr>
+
+        <div class="resume-row"><span>Total précompte :</span><strong id="res-precompte">0 FCFA</strong></div>
+        <div class="resume-row final"><span>Solde net :</span><strong id="res-solde">0 FCFA</strong></div>
       </div>
-
-  </div>
-
-  <!-- PAGE 3 : RÉSUMÉ -->
-  <div id="page-resume" class="page">
-    <h2>Résumé</h2>
-    <div class="resume-card">
-      <h2>Calcul automatique</h2>
-    
-      <div class="resume-row"><span>Total ventes :</span><strong id="res-ventes">0 FCFA</strong></div>
-      <div class="resume-row"><span>Total dépenses :</span><strong id="res-depenses">0 FCFA</strong></div>
-    
-      <hr>
-    
-      <div class="resume-row"><span>Bénéfice brut :</span><strong id="res-benefice">0 FCFA</strong></div>
-      <div class="resume-row"><span>IGS (5%) :</span><strong id="res-igs">0 FCFA</strong></div>
-      <div class="resume-row"><span>CAC (10%) :</span><strong id="res-cac">0 FCFA</strong></div>
-    
-      <hr>
-    
-      <div class="resume-row"><span>Total précompte :</span><strong id="res-precompte">0 FCFA</strong></div>
-      <div class="resume-row final"><span>Solde net :</span><strong id="res-solde">0 FCFA</strong></div>
-    </div>
-
-  </div>
+    </section>
+  </main>
 
   <!-- NAVIGATION BASSE -->
-  <div class="nav">
+  <nav class="nav">
     <button id="btn-ventes" class="active">Ventes</button>
     <button id="btn-depenses">Dépenses</button>
     <button id="btn-resume">Résumé</button>
-  </div>
+  </nav>
+</div>
 
-  <script>
-    // Navigation simple (pas encore de logique)
-    const pages = {
-      ventes: document.getElementById("page-ventes"),
-      depenses: document.getElementById("page-depenses"),
-      resume: document.getElementById("page-resume"),
-    };
+<script>
+  // Navigation simple -------------------------------------------------------
+  const pages = {
+    ventes: document.getElementById("page-ventes"),
+    depenses: document.getElementById("page-depenses"),
+    resume: document.getElementById("page-resume"),
+  };
 
-    const buttons = {
-      ventes: document.getElementById("btn-ventes"),
-      depenses: document.getElementById("btn-depenses"),
-      resume: document.getElementById("btn-resume"),
-    };
+  const buttons = {
+    ventes: document.getElementById("btn-ventes"),
+    depenses: document.getElementById("btn-depenses"),
+    resume: document.getElementById("btn-resume"),
+  };
 
-    function show(page) {
-      // cacher toutes les pages
-      Object.values(pages).forEach(p => p.classList.remove("active"));
-      // désactiver tous les boutons
-      Object.values(buttons).forEach(b => b.classList.remove("active"));
+  function show(page) {
+    Object.values(pages).forEach(p => p.classList.remove("active"));
+    Object.values(buttons).forEach(b => b.classList.remove("active"));
 
-      // montrer la bonne page
-      pages[page].classList.add("active");
-      buttons[page].classList.add("active");
+    pages[page].classList.add("active");
+    buttons[page].classList.add("active");
+
+    if (page === "resume") {
+      calculerResume();
     }
+  }
 
-    // Écouteurs
-    buttons.ventes.onclick = () => show("ventes");
-    buttons.depenses.onclick = () => show("depenses");
-    buttons.resume.onclick = () => show("resume");
+  buttons.ventes.onclick = () => show("ventes");
+  buttons.depenses.onclick = () => show("depenses");
+  buttons.resume.onclick = () => show("resume");
 
-    // Gestion des ventes --------------------------------------------------------
+  // Ventes : nouvelle logique ----------------------------------------------
+  let ventes = JSON.parse(localStorage.getItem("ofc_ventes_v2")) || [];
 
-    let ventes = JSON.parse(localStorage.getItem("ofc_ventes")) || {};
-    
-    // Sélection de tous les produits
-    document.querySelectorAll(".product").forEach(prod => {
-      prod.addEventListener("click", () => {
-        const nom = prod.dataset.name;
-    
-        // Incrémentation
-        if (!ventes[nom]) ventes[nom] = 0;
-        ventes[nom] += 1;
-    
-        // Sauvegarde
-        localStorage.setItem("ofc_ventes", JSON.stringify(ventes));
-    
-        // Animation visuelle
-        prod.classList.add("clicked");
-        setTimeout(() => prod.classList.remove("clicked"), 150);
-    
-        console.log("Vente enregistrée :", nom, ventes[nom]);
-      });
-    });
+  function saveVentes() {
+    localStorage.setItem("ofc_ventes_v2", JSON.stringify(ventes));
+  }
 
-    // Gestion des dépenses ------------------------------------------------------
+  document.querySelectorAll(".product").forEach(prod => {
+    prod.addEventListener("click", () => {
+      const name = prod.dataset.name;
+      const priceAttr = prod.dataset.price;
+      const price = Number(priceAttr || "0");
 
-    let depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
-    
-    const montantInput = document.getElementById("depense-montant");
-    const descInput = document.getElementById("depense-desc");
-    const btnAddDepense = document.getElementById("btn-add-depense");
-    const expenseList = document.getElementById("expense-list");
-    
-    // Affichage initial des dépenses
-    function renderDepenses() {
-      expenseList.innerHTML = "";
-      depenses.forEach(d => {
-        const item = document.createElement("div");
-        item.classList.add("expense-item");
-        item.innerHTML = `
-          <span><strong>${d.montant} FCFA</strong> – ${d.desc || "Sans description"}</span>
-        `;
-        expenseList.appendChild(item);
-      });
-    }
-    
-    renderDepenses();
-    
-    btnAddDepense.addEventListener("click", () => {
-      const montant = Number(montantInput.value.trim());
-      const desc = descInput.value.trim();
-    
-      if (!montant || montant <= 0) {
-        alert("Veuillez entrer un montant valide.");
+      if (!price || price <= 0) {
+        console.warn("Prix invalide pour le produit", name);
         return;
       }
-    
-      depenses.push({
-        montant: montant,
-        desc: desc || ""
-      });
-    
-      localStorage.setItem("ofc_depenses", JSON.stringify(depenses));
-    
-      // UI
-      montantInput.value = "";
-      descInput.value = "";
-    
-      renderDepenses();
+
+      const sale = {
+        name,
+        price,
+        ts: Date.now()
+      };
+
+      ventes.push(sale);
+      saveVentes();
+
+      // feedback visuel
+      prod.classList.add("clicked");
+      setTimeout(() => prod.classList.remove("clicked"), 120);
+
+      calculerResume();
+      console.log("Vente enregistrée:", sale);
+    });
+  });
+
+  // Dépenses : identique mais plus propre ----------------------------------
+  let depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
+
+  const montantInput = document.getElementById("depense-montant");
+  const descInput = document.getElementById("depense-desc");
+  const btnAddDepense = document.getElementById("btn-add-depense");
+  const expenseList = document.getElementById("expense-list");
+
+  function saveDepenses() {
+    localStorage.setItem("ofc_depenses", JSON.stringify(depenses));
+  }
+
+  function renderDepenses() {
+    expenseList.innerHTML = "";
+    depenses.forEach(d => {
+      const item = document.createElement("div");
+      item.className = "expense-item";
+      item.innerHTML = `<strong>${d.montant.toLocaleString()} FCFA</strong> — ${d.desc || "Sans description"}`;
+      expenseList.appendChild(item);
+    });
+  }
+
+  btnAddDepense.addEventListener("click", () => {
+    const montant = Number(montantInput.value.trim());
+    const desc = descInput.value.trim();
+
+    if (!montant || montant <= 0) {
+      alert("Veuillez entrer un montant valide.");
+      return;
+    }
+
+    depenses.push({
+      montant,
+      desc: desc || "",
+      ts: Date.now()
     });
 
+    saveDepenses();
+    renderDepenses();
+    calculerResume();
 
-    // Calcul du résumé --------------------------------------------------------
+    montantInput.value = "";
+    descInput.value = "";
+  });
 
-    function calculerResume() {
-      // Récupération des ventes
-      const ventes = JSON.parse(localStorage.getItem("ofc_ventes")) || {};
-      let totalVentes = 0;
-      Object.values(ventes).forEach(qtt => {
-        // 1 vente = 1000 FCFA (sera modifiable plus tard)
-        totalVentes += qtt * 1000;
-      });
-    
-      // Récupération dépenses
-      const depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
-      const totalDepenses = depenses.reduce((sum, d) => sum + d.montant, 0);
-    
-      // Calculs fiscaux
-      const benefice = totalVentes - totalDepenses;
+  // Résumé : logique inspirée, CAC = 10% de l'IGS --------------------------
+  function calculerResume() {
+    const ventesLS = JSON.parse(localStorage.getItem("ofc_ventes_v2")) || [];
+    const depensesLS = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
 
-      // IGS = 5% du bénéfice (si bénéfice > 0)
-      const igs = benefice > 0 ? benefice * 0.05 : 0;
-      
-      // CAC = 10% de l'IGS
-      const cac = igs * 0.10;
-      
-      const precompte = igs + cac;
-      const solde = benefice - precompte;
+    const totalVentes = ventesLS.reduce((sum, v) => sum + (v.price || 0), 0);
+    const totalDepenses = depensesLS.reduce((sum, d) => sum + (d.montant || 0), 0);
 
-    
-      // Mise à jour de l'UI
-      document.getElementById("res-ventes").textContent = totalVentes.toLocaleString() + " FCFA";
-      document.getElementById("res-depenses").textContent = totalDepenses.toLocaleString() + " FCFA";
-      document.getElementById("res-benefice").textContent = benefice.toLocaleString() + " FCFA";
-      document.getElementById("res-igs").textContent = igs.toLocaleString() + " FCFA";
-      document.getElementById("res-cac").textContent = cac.toLocaleString() + " FCFA";
-      document.getElementById("res-precompte").textContent = precompte.toLocaleString() + " FCFA";
-      document.getElementById("res-solde").textContent = solde.toLocaleString() + " FCFA";
-    }
-    
-    // Calcul automatique chaque fois qu’on change de page
-    window.addEventListener("hashchange", calculerResume);
-    window.addEventListener("load", calculerResume);
+    const benefice = totalVentes - totalDepenses;
 
-  </script>
+    // IGS = 5% du bénéfice (si bénéfice > 0)
+    const igs = benefice > 0 ? benefice * 0.05 : 0;
 
+    // CAC = 10% de l'IGS
+    const cac = igs * 0.10;
+
+    const precompte = igs + cac;
+    const solde = benefice - precompte;
+
+    document.getElementById("res-ventes").textContent =
+      totalVentes.toLocaleString() + " FCFA";
+    document.getElementById("res-depenses").textContent =
+      totalDepenses.toLocaleString() + " FCFA";
+    document.getElementById("res-benefice").textContent =
+      benefice.toLocaleString() + " FCFA";
+    document.getElementById("res-igs").textContent =
+      igs.toLocaleString() + " FCFA";
+    document.getElementById("res-cac").textContent =
+      cac.toLocaleString() + " FCFA";
+    document.getElementById("res-precompte").textContent =
+      precompte.toLocaleString() + " FCFA";
+    document.getElementById("res-solde").textContent =
+      solde.toLocaleString() + " FCFA";
+  }
+
+  // Initialisation UI
+  renderDepenses();
+  calculerResume();
+
+  // Service Worker ---------------------------------------------------------
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(reg => console.log("SW enregistré:", reg.scope))
+        .catch(err => console.error("Erreur SW:", err));
+    });
+  }
+</script>
 </body>
 </html>
