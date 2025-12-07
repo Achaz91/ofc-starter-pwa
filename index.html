@@ -325,6 +325,40 @@
       header { padding-left: 12px; }
       main { padding: 0 12px 8px; }
     }
+
+    /* ===== Layout Ventes avec 3 zones ===== */
+
+    .sales-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    /* Produits scrollables */
+    .products-scroll {
+      max-height: 180px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+    
+    /* Formulaire stable */
+    .sale-form {
+      background: #0f172a;
+      padding: 14px;
+      border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    
+    /* Liste des ventes scrollable */
+    .sales-list-scroll {
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 6px;
+      margin-top: 4px;
+      border-top: 1px solid #1e293b;
+    }
+
   </style>
 </head>
 <body>
@@ -337,89 +371,99 @@
     <!-- VENTES -->
     <section id="page-ventes" class="page active">
       <h2>Ventes</h2>
-      <div class="card sales-card">
-        <small class="helper">Cliquez sur un produit pour préremplir le formulaire.</small>
-
-        <div class="product-grid">
-          <div class="product" data-name="Chaussure homme" data-price="15000">
-            <img src="./products/man_shoes.webp" alt="Chaussure homme">
-            <span>Chaussure homme</span>
-            <small>15 000 FCFA</small>
-          </div>
-
-          <div class="product" data-name="Escarpin femme" data-price="20000">
-            <img src="./products/woman_shoes.jpeg" alt="Escarpin femme">
-            <span>Escarpin femme</span>
-            <small>20 000 FCFA</small>
-          </div>
-
-          <div class="product" data-name="Sac homme" data-price="15000">
-            <img src="./products/man_bag.webp" alt="Sac homme">
-            <span>Sac homme</span>
-            <small>15 000 FCFA</small>
-          </div>
-
-          <div class="product" data-name="Parfum homme" data-price="20000">
-            <img src="./products/man_perfum.webp" alt="Parfum homme">
-            <span>Parfum homme</span>
-            <small>20 000 FCFA</small>
-          </div>
-
-          <div class="product" data-name="Sac femme" data-price="18000">
-            <img src="./products/woman_bag.webp" alt="Sac femme">
-            <span>Sac femme</span>
-            <small>18 000 FCFA</small>
-          </div>
-
-          <div class="product" data-name="Parfum femme" data-price="25000">
-            <img src="./products/woman_parfum.webp" alt="Parfum femme">
-            <span>Parfum femme</span>
-            <small>25 000 FCFA</small>
+    
+      <div class="sales-container">
+    
+        <!-- Scroll Produits -->
+        <div class="products-scroll">
+          <div class="product-grid">
+            <div class="product" data-name="Chaussure homme" data-price="15000">
+              <img src="./products/man_shoes.webp" alt="">
+              <span>Chaussure homme</span>
+              <small>15 000 FCFA</small>
+            </div>
+    
+            <div class="product" data-name="Escarpin femme" data-price="20000">
+              <img src="./products/woman_shoes.jpeg" alt="">
+              <span>Escarpin femme</span>
+              <small>20 000 FCFA</small>
+            </div>
+    
+            <div class="product" data-name="Sac homme" data-price="15000">
+              <img src="./products/man_bag.webp" alt="">
+              <span>Sac homme</span>
+              <small>15 000 FCFA</small>
+            </div>
+    
+            <div class="product" data-name="Parfum homme" data-price="20000">
+              <img src="./products/man_perfum.webp" alt="">
+              <span>Parfum homme</span>
+              <small>20 000 FCFA</small>
+            </div>
+    
+            <div class="product" data-name="Sac femme" data-price="18000">
+              <img src="./products/woman_bag.webp" alt="">
+              <span>Sac femme</span>
+              <small>18 000 FCFA</small>
+            </div>
+    
+            <div class="product" data-name="Parfum femme" data-price="25000">
+              <img src="./products/woman_parfum.webp" alt="">
+              <span>Parfum femme</span>
+              <small>25 000 FCFA</small>
+            </div>
           </div>
         </div>
-
+    
+        <!-- Formulaire stable -->
         <div class="sale-form">
-          <label for="vente-date">Date</label>
+          <label>Date</label>
           <input type="date" id="vente-date">
-
-          <label for="vente-desc">Description / Client</label>
-          <input type="text" id="vente-desc" placeholder="Ex : Chaussure homme bleue">
-
-          <label for="vente-montant">Montant (FCFA)</label>
-          <input type="number" id="vente-montant" placeholder="Ex : 15000">
-
-          <label for="vente-mode">Mode de paiement</label>
+    
+          <label>Description / Client</label>
+          <input type="text" id="vente-desc">
+    
+          <label>Montant (FCFA)</label>
+          <input type="number" id="vente-montant">
+    
+          <label>Mode de paiement</label>
           <select id="vente-mode">
             <option value="Cash">Cash</option>
             <option value="Mobile Money">Mobile Money</option>
             <option value="Autre">Autre</option>
           </select>
-
+    
           <button id="btn-add-vente">Ajouter la vente</button>
         </div>
-
-        <div class="sales-list" id="sales-list"></div>
+    
+        <!-- Liste scrollable des ventes -->
+        <div class="sales-list-scroll">
+          <div id="sales-list"></div>
+        </div>
+    
       </div>
     </section>
 
     <!-- DÉPENSES -->
     <section id="page-depenses" class="page">
       <h2>Dépenses</h2>
-
+    
       <div class="expense-card">
         <h3>Ajouter une dépense</h3>
-
+    
         <label>Montant (FCFA)</label>
         <input id="depense-montant" type="number" placeholder="Ex : 1500">
-
+    
         <label>Description (optionnel)</label>
         <input id="depense-desc" type="text" placeholder="Ex : Transport">
-
+    
         <button id="btn-add-depense">Ajouter la dépense</button>
       </div>
-
-      <h3>Dépenses enregistrées</h3>
-      <div class="expense-list" id="expense-list"></div>
+    
+      <!-- Liste scrollable des dépenses -->
+      <div class="expense-list" style="max-height:260px; overflow-y:auto; padding-right:6px;">
+        <div id="expense-list"></div>
+      </div>
     </section>
 
     <!-- RÉSUMÉ -->
