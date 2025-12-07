@@ -424,7 +424,29 @@
       scroll-snap-align: start;
       transition: transform 0.12s ease, background 0.12s ease;
     }
+
+    .btn-reset {
+      width: 100%;
+      padding: 14px;
+      margin-top: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #dc2626;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
     
+    .btn-reset:hover {
+      background: #b91c1c;
+    }
+    
+    .btn-reset:active {
+      transform: scale(0.96);
+    }
+
   </style>
 </head>
 <body>
@@ -553,6 +575,7 @@
 
         <div class="resume-row"><span>Total précompte :</span><strong id="res-precompte">0 FCFA</strong></div>
         <div class="resume-row final"><span>Solde net :</span><strong id="res-solde">0 FCFA</strong></div>
+        <button id="btn-reset-data" class="btn-reset">Réinitialiser toutes les données</button>
       </div>
     </section>
   </main>
