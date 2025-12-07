@@ -795,6 +795,29 @@
     });
   }
 
+  function resetAllData() {
+    const confirmReset = confirm(
+      "Voulez-vous vraiment tout réinitialiser ?\nToutes les données seront supprimées."
+    );
+  
+    if (!confirmReset) return;
+  
+    // Suppression des ventes
+    localStorage.removeItem("ofc_ventes_v3");
+  
+    // Suppression des dépenses
+    localStorage.removeItem("ofc_depenses");
+  
+    // Rafraîchit l'affichage
+    renderVentes();
+    renderDepenses();
+    calculerResume();
+  
+    alert("Données réinitialisées avec succès !");
+  }
+
+  document.getElementById("btn-reset-data").addEventListener("click", resetAllData);
+
 </script>
   
 </body>
