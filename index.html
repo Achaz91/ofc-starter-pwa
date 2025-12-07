@@ -164,6 +164,82 @@
       color: #cbd5e1;
     }
 
+    /* Carte centrale */
+    .expense-card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 420px;
+      margin: 0 auto;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    
+    /* Titre */
+    .expense-card h3 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #f1f5f9;
+    }
+    
+    /* Labels */
+    .expense-card label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #e2e8f0;
+    }
+    
+    /* Input fields */
+    .expense-card input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: white;
+      margin-bottom: 14px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+    
+    /* Bouton */
+    #btn-add-depense {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #0284c7, #0ea5e9);
+      font-size: 15px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    
+    #btn-add-depense:hover {
+      transform: scale(1.02);
+      background: linear-gradient(90deg, #0369a1, #0284c7);
+    }
+    
+    /* Liste des dépenses */
+    .expense-list {
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    
+    .expense-item {
+      padding: 14px;
+      background: #1e293b;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-size: 15px;
+    }
+
   </style>
 </head>
 <body>
@@ -210,7 +286,10 @@
   <!-- PAGE 2 : DÉPENSES -->
   <div id="page-depenses" class="page">
     <h2>Dépenses</h2>
-      <div class="expense-form">
+      <div class="expense-card">
+
+        <h3>Ajouter une dépense</h3>
+      
         <label>Montant (FCFA)</label>
         <input id="depense-montant" type="number" placeholder="Ex : 1500">
       
@@ -219,9 +298,11 @@
       
         <button id="btn-add-depense">Ajouter la dépense</button>
       
-        <div class="expense-list" id="expense-list">
-          <!-- Liste dynamique -->
-        </div>
+      </div>
+      
+      <h3>Dépenses enregistrées</h3>
+      <div class="expense-list" id="expense-list"></div>
+
       </div>
 
   </div>
