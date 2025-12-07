@@ -65,6 +65,43 @@
       margin-top: 12px;
       opacity: 0.7;
     }
+
+        /* Grille des produits */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    
+    .product {
+      background: #1e293b;
+      padding: 10px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    
+    .product:hover {
+      transform: translateY(-4px);
+      background: #243449;
+    }
+    
+    .product img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .product span {
+      display: block;
+      margin-top: 8px;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+
   </style>
 </head>
 <body>
@@ -72,7 +109,40 @@
   <!-- PAGE 1 : VENTES -->
   <div id="page-ventes" class="page active">
     <h2>Ventes</h2>
-    <div class="placeholder">Galerie produits (ajout à l'étape 3)</div>
+    <div class="product-grid">
+
+  <div class="product">
+    <img src="./products/man_shoes.webp" alt="Chaussures homme">
+    <span>Chaussures Homme</span>
+  </div>
+
+  <div class="product">
+    <img src="./products/woman_shoes.jpeg" alt="Chaussures femme">
+    <span>Chaussures Femme</span>
+  </div>
+
+  <div class="product">
+    <img src="./products/man_bag.webp" alt="Sac homme">
+    <span>Sac Homme</span>
+  </div>
+
+  <div class="product">
+    <img src="./products/man_perfum.webp" alt="Parfum homme">
+    <span>Parfum Homme</span>
+  </div>
+
+  <div class="product">
+    <img src="./products/woman_bag.webp" alt="Sac femme">
+    <span>Sac Femme</span>
+  </div>
+
+  <div class="product">
+    <img src="./products/woman_parfum.webp" alt="Parfum femme">
+    <span>Parfum Femme</span>
+  </div>
+
+</div>
+
   </div>
 
   <!-- PAGE 2 : DÉPENSES -->
