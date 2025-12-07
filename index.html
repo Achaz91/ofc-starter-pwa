@@ -108,6 +108,62 @@
       transition: 0.1s;
     }
 
+    .expense-form {
+      background: #1e293b;
+      padding: 16px;
+      border-radius: 12px;
+    }
+    
+    .expense-form label {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+    
+    .expense-form input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: none;
+      background: #334155;
+      color: #fff;
+    }
+    
+    #btn-add-depense {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      border: none;
+      background: #0ea5e9;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    
+    #btn-add-depense:hover {
+      background: #0284c7;
+    }
+    
+    .expense-list {
+      margin-top: 20px;
+    }
+    
+    .expense-item {
+      padding: 10px;
+      background: #0f172a;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #1e293b;
+    }
+    
+    .expense-item span {
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
   </style>
 </head>
 <body>
@@ -154,7 +210,20 @@
   <!-- PAGE 2 : DÉPENSES -->
   <div id="page-depenses" class="page">
     <h2>Dépenses</h2>
-    <div class="placeholder">Formulaire d’ajout de dépense (étape 5)</div>
+      <div class="expense-form">
+        <label>Montant (FCFA)</label>
+        <input id="depense-montant" type="number" placeholder="Ex : 1500">
+      
+        <label>Description (optionnel)</label>
+        <input id="depense-desc" type="text" placeholder="Ex : Transport">
+      
+        <button id="btn-add-depense">Ajouter la dépense</button>
+      
+        <div class="expense-list" id="expense-list">
+          <!-- Liste dynamique -->
+        </div>
+      </div>
+
   </div>
 
   <!-- PAGE 3 : RÉSUMÉ -->
@@ -222,6 +291,53 @@
     
         console.log("Vente enregistrée :", nom, ventes[nom]);
       });
+    });
+
+    // Gestion des dépenses ------------------------------------------------------
+
+    let depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
+    
+    const montantInput = document.getElementById("depense-montant");
+    const descInput = document.getElementById("depense-desc");
+    const btnAddDepense = document.getElementById("btn-add-depense");
+    const expenseList = document.getElementById("expense-list");
+    
+    // Affichage initial des dépenses
+    function renderDepenses() {
+      expenseList.innerHTML = "";
+      depenses.forEach(d => {
+        const item = document.createElement("div");
+        item.classList.add("expense-item");
+        item.innerHTML = `
+          <span><strong>${d.montant} FCFA</strong> – ${d.desc || "Sans description"}</span>
+        `;
+        expenseList.appendChild(item);
+      });
+    }
+    
+    renderDepenses();
+    
+    btnAddDepense.addEventListener("click", () => {
+      const montant = Number(montantInput.value.trim());
+      const desc = descInput.value.trim();
+    
+      if (!montant || montant <= 0) {
+        alert("Veuillez entrer un montant valide.");
+        return;
+      }
+    
+      depenses.push({
+        montant: montant,
+        desc: desc || ""
+      });
+    
+      localStorage.setItem("ofc_depenses", JSON.stringify(depenses));
+    
+      // UI
+      montantInput.value = "";
+      descInput.value = "";
+    
+      renderDepenses();
     });
 
   </script>
