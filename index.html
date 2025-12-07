@@ -220,7 +220,11 @@
     .expense-list {
       max-width: 420px;
       margin: 0 auto;
+      height: 260px;             /* fenêtre fixe */
+      overflow-y: auto;          /* scroll interne */
+      padding-right: 6px;
     }
+
 
     .expense-item {
       padding: 12px;
@@ -348,12 +352,13 @@
 
     /* Liste des ventes scrollable */
     .sales-list-scroll {
-      max-height: 260px;
-      overflow-y: auto;
+      height: 260px;              /* Fixe la hauteur de la zone */
+      overflow-y: auto;           /* Scroll interne vertical */
       padding-right: 6px;
       margin-top: 4px;
       border-top: 1px solid #1e293b;
     }
+
 
     /* Effet zoom tactile */
     .product:active {
@@ -485,7 +490,7 @@
       </div>
 
       <!-- Liste scrollable des dépenses -->
-      <div class="expense-list" style="max-height:260px; overflow-y:auto; padding-right:6px;">
+      <div class="expense-list">
         <div id="expense-list"></div>
       </div>
     </section>
