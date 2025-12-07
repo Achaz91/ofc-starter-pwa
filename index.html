@@ -802,18 +802,26 @@
   
     if (!confirmReset) return;
   
-    // Suppression des ventes
+    // 1. Effacer toutes les données stockées
     localStorage.removeItem("ofc_ventes_v3");
-  
-    // Suppression des dépenses
     localStorage.removeItem("ofc_depenses");
   
-    // Rafraîchit l'affichage
-    renderVentes();
-    renderDepenses();
+    // 2. Vider les tableaux en mémoire (si utilisés dans ton script)
+    ventes = [];
+    depenses = [];
+  
+    // 3. Effacer l'affichage des ventes
+    const ventesList = document.getElementById("ventes-list");
+    if (ventesList) ventesList.innerHTML = "";
+  
+    // 4. Effacer l'affichage des dépenses
+    const depensesList = document.getElementById("depenses-list");
+    if (depensesList) depensesList.innerHTML = "";
+  
+    // 5. Recalculer le résumé (donnera 0 partout)
     calculerResume();
   
-    alert("Données réinitialisées avec succès !");
+    alert("Toutes les données ont été réinitialisées !");
   }
 
   document.getElementById("btn-reset-data").addEventListener("click", resetAllData);
