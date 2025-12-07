@@ -401,6 +401,55 @@
       border-top: 1px solid #1e293b;
     }
 
+    /* Effet zoom tactile */
+    .product:active {
+      transform: scale(0.92);
+    }
+    
+    /* Scroll horizontal intelligent */
+    .products-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 8px;
+      white-space: nowrap;
+      scroll-snap-type: x mandatory;
+    }
+    
+    .product-row {
+      display: inline-flex;
+      gap: 12px;
+    }
+    
+    .product {
+      scroll-snap-align: start;
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
+    
+    /* Bouton flottant - pour vente manuelle */
+    .fab {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.55);
+      cursor: pointer;
+      z-index: 9999;
+      transition: 0.2s ease;
+    }
+    
+    .fab:hover {
+      transform: scale(1.08);
+    }
+
+    
   </style>
 </head>
 <body>
@@ -618,16 +667,20 @@
     prod.addEventListener("click", () => {
       const name = prod.dataset.name || "";
       const price = Number(prod.dataset.price || "0") || "";
-
+  
       venteDescEl.value = name;
       venteMontantEl.value = price;
-      if (!venteDateEl.value) venteDateEl.value = todayISO();
       venteModeEl.value = "Cash";
-
+      if (!venteDateEl.value) venteDateEl.value = todayISO();
+  
+      // Effet tactile
+      if (navigator.vibrate) navigator.vibrate(8);
+  
       prod.classList.add("clicked");
       setTimeout(() => prod.classList.remove("clicked"), 120);
     });
   });
+
 
   // Bouton ajouter la vente
   btnAddVente.addEventListener("click", () => {
@@ -742,6 +795,26 @@
         .catch(err => console.error("Erreur SW:", err));
     });
   }
+
+  const fabAdd = document.getElementById("fab-add");
+
+  fabAdd.addEventListener("click", () => {
+    // Réinitialise le formulaire pour une vente manuelle
+    venteDescEl.value = "";
+    venteMontantEl.value = "";
+    venteModeEl.value = "Cash";
+    venteDateEl.value = todayISO();
+  
+    // Effet tactile
+    if (navigator.vibrate) navigator.vibrate(12);
+  
+    show("ventes");
+  
+    // Scroll vers le formulaire (propre)
+    document.querySelector(".sale-form").scrollIntoView({ behavior: "smooth" });
+  });
+
 </script>
+  <div id="fab-add" class="fab">+</div>
 </body>
 </html>
