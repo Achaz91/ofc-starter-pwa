@@ -419,6 +419,57 @@
       background: #15803d;
     }
 
+    .btn-primary {
+      width: 100%;
+      background: #0284c7;
+      padding: 14px 0;
+      margin-top: 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .btn-primary:hover {
+      background: #0369a1;
+    }
+    
+    .btn-whatsapp {
+      width: 100%;
+      background: #16a34a;
+      padding: 14px 0;
+      margin-top: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .btn-whatsapp:hover {
+      background: #15803d;
+    }
+    
+    .btn-danger {
+      width: 100%;
+      background: #dc2626;
+      padding: 14px 0;
+      margin-top: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
   </style>
 </head>
 <body>
@@ -548,15 +599,10 @@
         <div class="resume-row"><span>Total précompte :</span><strong id="res-precompte">0 FCFA</strong></div>
         <div class="resume-row final"><span>Solde net :</span><strong id="res-solde">0 FCFA</strong></div>
 
-        <button class="btn-blue" onclick="exportAsTxt()">
-          Exporter en fichier TXT
-        </button>
-        
-        <button class="btn-green" onclick="shareOnWhatsApp()">
-          Partager via WhatsApp
-        </button>
+        <button class="btn-primary" onclick="exportTXT()">Exporter en fichier TXT</button>
+        <button class="btn-whatsapp" onclick="shareWhatsApp()">Partager via WhatsApp</button>
+        <button class="btn-danger" onclick="resetAllData()">Réinitialiser toutes les données</button>
 
-        <button id="btn-reset-data" class="btn-reset">Réinitialiser toutes les données</button>
       </div>
     </section>
   </main>
@@ -893,6 +939,65 @@
       const url = "https://wa.me/?text=" + encodeURIComponent(msg);
       window.open(url, "_blank");
   }
+
+  function generateReportText() {
+      let ventes = JSON.parse(localStorage.getItem("ofc_ventes_v3")) || [];
+      let depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
+  
+      let totalVentes = ventes.reduce((a, v) => a + Number(v.montant), 0);
+      let totalDepenses = depenses.reduce((a, d) => a + Number(d.montant), 0);
+  
+      let benefice = totalVentes - totalDepenses;
+      let igs = Math.round(benefice * 0.05);
+      let cac = Math.round(igs * 0.10);
+      let precompte = igs + cac;
+      let solde = benefice - precompte;
+  
+      let text = `=== OFC Starter – Rapport automatique ===
+  
+  --- VENTES ---
+  ${ventes.length === 0 ? "Aucune vente enregistrée." :
+  ventes.map(v => `• ${v.nom} – ${v.montant} FCFA (${v.date})`).join("\n")
+  }
+  
+  --- DÉPENSES ---
+  ${depenses.length === 0 ? "Aucune dépense enregistrée." :
+  depenses.map(d => `• ${d.montant} FCFA – ${d.description || "Sans description"} (${d.date})`).join("\n")
+  }
+  
+  --- RÉSUMÉ AUTOMATIQUE ---
+  Total ventes : ${totalVentes} FCFA
+  Total dépenses : ${totalDepenses} FCFA
+  Bénéfice brut : ${benefice} FCFA
+  IGS (5%) : ${igs} FCFA
+  CAC (10% de l'IGS) : ${cac} FCFA
+  Total précompte : ${precompte} FCFA
+  Solde net : ${solde} FCFA
+  `;
+  
+      return text;
+  }
+
+  function exportTXT() {
+      const content = generateReportText();
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+  
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "ofc_starter_rapport.txt";
+      link.click();
+  
+      URL.revokeObjectURL(url);
+  }
+
+  function shareWhatsApp() {
+    const content = generateReportText();
+    const encoded = encodeURIComponent(content);
+
+    const whatsappURL = "https://wa.me/?text=" + encoded;
+    window.open(whatsappURL, "_blank");
+}
 
 </script>
 
