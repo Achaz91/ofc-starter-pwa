@@ -334,12 +334,54 @@
       gap: 14px;
     }
     
-    /* Produits scrollables */
+    /* ===== Produits en scroll horizontal ===== */
+
     .products-scroll {
-      max-height: 180px;
-      overflow-y: auto;
-      padding-right: 6px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 2px;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
     }
+    
+    .product-row {
+      display: inline-flex;
+      gap: 12px;
+    }
+    
+    .product {
+      display: inline-block;
+      width: 120px;
+      flex-shrink: 0;
+      background: #111827;
+      padding: 8px;
+      border-radius: 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    
+    .product img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    
+    .product span {
+      display: block;
+      margin-top: 6px;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+    
+    .product small {
+      display: block;
+      font-size: 12px;
+      color: #93c5fd;
+      margin-top: 2px;
+    }
+
     
     /* Formulaire stable */
     .sale-form {
@@ -374,46 +416,48 @@
     
       <div class="sales-container">
     
-        <!-- Scroll Produits -->
-        <div class="products-scroll">
-          <div class="product-grid">
-            <div class="product" data-name="Chaussure homme" data-price="15000">
-              <img src="./products/man_shoes.webp" alt="">
-              <span>Chaussure homme</span>
-              <small>15 000 FCFA</small>
-            </div>
-    
-            <div class="product" data-name="Escarpin femme" data-price="20000">
-              <img src="./products/woman_shoes.jpeg" alt="">
-              <span>Escarpin femme</span>
-              <small>20 000 FCFA</small>
-            </div>
-    
-            <div class="product" data-name="Sac homme" data-price="15000">
-              <img src="./products/man_bag.webp" alt="">
-              <span>Sac homme</span>
-              <small>15 000 FCFA</small>
-            </div>
-    
-            <div class="product" data-name="Parfum homme" data-price="20000">
-              <img src="./products/man_perfum.webp" alt="">
-              <span>Parfum homme</span>
-              <small>20 000 FCFA</small>
-            </div>
-    
-            <div class="product" data-name="Sac femme" data-price="18000">
-              <img src="./products/woman_bag.webp" alt="">
-              <span>Sac femme</span>
-              <small>18 000 FCFA</small>
-            </div>
-    
-            <div class="product" data-name="Parfum femme" data-price="25000">
-              <img src="./products/woman_parfum.webp" alt="">
-              <span>Parfum femme</span>
-              <small>25 000 FCFA</small>
-            </div>
+        <!-- Scroll Produits --><div class="products-scroll">
+        <div class="product-row">
+      
+          <div class="product" data-name="Chaussure homme" data-price="15000">
+            <img src="./products/man_shoes.webp" alt="">
+            <span>Chaussure homme</span>
+            <small>15 000 FCFA</small>
           </div>
+      
+          <div class="product" data-name="Escarpin femme" data-price="20 000">
+            <img src="./products/woman_shoes.jpeg" alt="">
+            <span>Escarpin femme</span>
+            <small>20 000 FCFA</small>
+          </div>
+      
+          <div class="product" data-name="Sac homme" data-price="15000">
+            <img src="./products/man_bag.webp" alt="">
+            <span>Sac homme</span>
+            <small>15 000 FCFA</small>
+          </div>
+      
+          <div class="product" data-name="Parfum homme" data-price="20000">
+            <img src="./products/man_perfum.webp" alt="">
+            <span>Parfum homme</span>
+            <small>20 000 FCFA</small>
+          </div>
+      
+          <div class="product" data-name="Sac femme" data-price="18000">
+            <img src="./products/woman_bag.webp" alt="">
+            <span>Sac femme</span>
+            <small>18 000 FCFA</small>
+          </div>
+      
+          <div class="product" data-name="Parfum femme" data-price="25000">
+            <img src="./products/woman_parfum.webp" alt="">
+            <span>Parfum femme</span>
+            <small>25 000 FCFA</small>
+          </div>
+      
         </div>
+      </div>
+
     
         <!-- Formulaire stable -->
         <div class="sale-form">
