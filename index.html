@@ -102,6 +102,12 @@
       color: #e2e8f0;
     }
 
+    .product.clicked {
+      transform: scale(0.92);
+      background: #334155;
+      transition: 0.1s;
+    }
+
   </style>
 </head>
 <body>
@@ -110,36 +116,36 @@
   <div id="page-ventes" class="page active">
     <h2>Ventes</h2>
     <div class="product-grid">
-
-  <div class="product">
-    <img src="./products/man_shoes.webp" alt="Chaussures homme">
-    <span>Chaussures Homme</span>
-  </div>
-
-  <div class="product">
-    <img src="./products/woman_shoes.jpeg" alt="Chaussures femme">
-    <span>Chaussures Femme</span>
-  </div>
-
-  <div class="product">
-    <img src="./products/man_bag.webp" alt="Sac homme">
-    <span>Sac Homme</span>
-  </div>
-
-  <div class="product">
-    <img src="./products/man_perfum.webp" alt="Parfum homme">
-    <span>Parfum Homme</span>
-  </div>
-
-  <div class="product">
-    <img src="./products/woman_bag.webp" alt="Sac femme">
-    <span>Sac Femme</span>
-  </div>
-
-  <div class="product">
-    <img src="./products/woman_parfum.webp" alt="Parfum femme">
-    <span>Parfum Femme</span>
-  </div>
+    
+    <div class="product" data-name="Chaussures Homme">
+      <img src="./products/man_shoes.webp" alt="Chaussures homme">
+      <span>Chaussures Homme</span>
+    </div>
+    
+    <div class="product" data-name="Chaussures Femme">
+      <img src="./products/woman_shoes.jpeg" alt="Chaussures femme">
+      <span>Chaussures Femme</span>
+    </div>
+    
+    <div class="product" data-name="Sac Homme">
+      <img src="./products/man_bag.webp" alt="Sac homme">
+      <span>Sac Homme</span>
+    </div>
+    
+    <div class="product" data-name="Parfum Homme">
+      <img src="./products/man_perfum.webp" alt="Parfum homme">
+      <span>Parfum Homme</span>
+    </div>
+    
+    <div class="product" data-name="Sac Femme">
+      <img src="./products/woman_bag.webp" alt="Sac femme">
+      <span>Sac Femme</span>
+    </div>
+    
+    <div class="product" data-name="Parfum Femme">
+      <img src="./products/woman_parfum.webp" alt="Parfum femme">
+      <span>Parfum Femme</span>
+    </div>
 
 </div>
 
@@ -193,6 +199,31 @@
     buttons.ventes.onclick = () => show("ventes");
     buttons.depenses.onclick = () => show("depenses");
     buttons.resume.onclick = () => show("resume");
+
+    // Gestion des ventes --------------------------------------------------------
+
+    let ventes = JSON.parse(localStorage.getItem("ofc_ventes")) || {};
+    
+    // Sélection de tous les produits
+    document.querySelectorAll(".product").forEach(prod => {
+      prod.addEventListener("click", () => {
+        const nom = prod.dataset.name;
+    
+        // Incrémentation
+        if (!ventes[nom]) ventes[nom] = 0;
+        ventes[nom] += 1;
+    
+        // Sauvegarde
+        localStorage.setItem("ofc_ventes", JSON.stringify(ventes));
+    
+        // Animation visuelle
+        prod.classList.add("clicked");
+        setTimeout(() => prod.classList.remove("clicked"), 150);
+    
+        console.log("Vente enregistrée :", nom, ventes[nom]);
+      });
+    });
+
   </script>
 
 </body>
