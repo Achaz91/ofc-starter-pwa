@@ -10,9 +10,7 @@
   <link rel="icon" href="./icons/icon-192.png">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -24,7 +22,6 @@
       min-height: 100vh;
     }
 
-    /* Conteneur global type “app mobile” */
     .app {
       max-width: 480px;
       margin: 0 auto;
@@ -51,14 +48,8 @@
       overflow-y: auto;
     }
 
-    /* Pages */
-    .page {
-      display: none;
-      padding-bottom: 12px;
-    }
-    .page.active {
-      display: block;
-    }
+    .page { display: none; padding-bottom: 14px; }
+    .page.active { display: block; }
 
     h2 {
       margin-top: 0;
@@ -66,12 +57,12 @@
       font-size: 20px;
     }
 
-    /* NAV BASSE */
     .nav {
       display: flex;
       background: #020617;
       border-top: 1px solid #1e293b;
     }
+
     .nav button {
       flex: 1;
       padding: 10px 0 12px;
@@ -81,12 +72,12 @@
       color: #94a3b8;
       cursor: pointer;
     }
+
     .nav button.active {
       color: #0ea5e9;
       border-top: 3px solid #0ea5e9;
     }
 
-    /* CARTE GÉNÉRIQUE */
     .card {
       background: #0f172a;
       border-radius: 16px;
@@ -94,16 +85,25 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.45);
     }
 
-    /* VENTES : grille produits */
+    /* === VENTES === */
+
+    .sales-card small.helper {
+      display: block;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 16px;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
     .product {
       background: #111827;
-      padding: 10px;
+      padding: 8px;
       border-radius: 14px;
       text-align: center;
       cursor: pointer;
@@ -112,7 +112,7 @@
 
     .product img {
       width: 100%;
-      height: 100px;
+      height: 90px;
       object-fit: cover;
       border-radius: 10px;
       display: block;
@@ -120,8 +120,8 @@
 
     .product span {
       display: block;
-      margin-top: 8px;
-      font-size: 14px;
+      margin-top: 6px;
+      font-size: 13px;
       color: #e5e7eb;
     }
 
@@ -137,13 +137,87 @@
       background: #1f2937;
     }
 
-    /* DÉPENSES */
+    .sale-form {
+      margin-top: 4px;
+    }
+
+    .sale-form label {
+      display: block;
+      font-size: 13px;
+      margin-top: 8px;
+      margin-bottom: 4px;
+      color: #e5e7eb;
+    }
+
+    .sale-form input,
+    .sale-form select {
+      width: 100%;
+      padding: 9px 10px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #f9fafb;
+      font-size: 14px;
+    }
+
+    #btn-add-vente {
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, #0284c7, #0ea5e9);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    #btn-add-vente:hover {
+      transform: scale(1.02);
+      background: linear-gradient(90deg, #0369a1, #0284c7);
+    }
+
+    .sales-list {
+      margin-top: 14px;
+    }
+
+    .sale-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #1e293b;
+      font-size: 14px;
+    }
+
+    .sale-item-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+
+    .sale-item-main span.desc {
+      color: #e5e7eb;
+    }
+
+    .sale-item-main span.amount {
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .sale-item-meta {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    /* === DÉPENSES === */
+
     .expense-card {
       background: #0f172a;
       padding: 20px;
       border-radius: 14px;
       max-width: 420px;
-      margin: 0 auto 24px;
+      margin: 0 auto 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.45);
     }
 
@@ -205,7 +279,8 @@
       font-size: 14px;
     }
 
-    /* RÉSUMÉ */
+    /* === RÉSUMÉ === */
+
     .resume-card {
       background: #0f172a;
       border-radius: 18px;
@@ -247,12 +322,8 @@
     }
 
     @media (max-width: 480px) {
-      header {
-        padding-left: 12px;
-      }
-      main {
-        padding: 0 12px 8px;
-      }
+      header { padding-left: 12px; }
+      main { padding: 0 12px 8px; }
     }
   </style>
 </head>
@@ -263,53 +334,75 @@
   </header>
 
   <main>
-    <!-- PAGE VENTES -->
+    <!-- VENTES -->
     <section id="page-ventes" class="page active">
       <h2>Ventes</h2>
-      <div class="card">
+      <div class="card sales-card">
+        <small class="helper">Cliquez sur un produit pour préremplir le formulaire.</small>
+
         <div class="product-grid">
-
-          <div class="product" data-name="Chaussures Homme" data-price="10000">
-            <img src="./products/man_shoes.webp" alt="Chaussures homme">
-            <span>Chaussures Homme</span>
-            <small>10 000 FCFA</small>
-          </div>
-
-          <div class="product" data-name="Chaussures Femme" data-price="12000">
-            <img src="./products/woman_shoes.jpeg" alt="Chaussures femme">
-            <span>Chaussures Femme</span>
-            <small>12 000 FCFA</small>
-          </div>
-
-          <div class="product" data-name="Sac Homme" data-price="15000">
-            <img src="./products/man_bag.webp" alt="Sac homme">
-            <span>Sac Homme</span>
+          <div class="product" data-name="Chaussure homme" data-price="15000">
+            <img src="./products/man_shoes.webp" alt="Chaussure homme">
+            <span>Chaussure homme</span>
             <small>15 000 FCFA</small>
           </div>
 
-          <div class="product" data-name="Parfum Homme" data-price="20000">
-            <img src="./products/man_perfum.webp" alt="Parfum homme">
-            <span>Parfum Homme</span>
+          <div class="product" data-name="Escarpin femme" data-price="20000">
+            <img src="./products/woman_shoes.jpeg" alt="Escarpin femme">
+            <span>Escarpin femme</span>
             <small>20 000 FCFA</small>
           </div>
 
-          <div class="product" data-name="Sac Femme" data-price="18000">
+          <div class="product" data-name="Sac homme" data-price="15000">
+            <img src="./products/man_bag.webp" alt="Sac homme">
+            <span>Sac homme</span>
+            <small>15 000 FCFA</small>
+          </div>
+
+          <div class="product" data-name="Parfum homme" data-price="20000">
+            <img src="./products/man_perfum.webp" alt="Parfum homme">
+            <span>Parfum homme</span>
+            <small>20 000 FCFA</small>
+          </div>
+
+          <div class="product" data-name="Sac femme" data-price="18000">
             <img src="./products/woman_bag.webp" alt="Sac femme">
-            <span>Sac Femme</span>
+            <span>Sac femme</span>
             <small>18 000 FCFA</small>
           </div>
 
-          <div class="product" data-name="Parfum Femme" data-price="25000">
+          <div class="product" data-name="Parfum femme" data-price="25000">
             <img src="./products/woman_parfum.webp" alt="Parfum femme">
-            <span>Parfum Femme</span>
+            <span>Parfum femme</span>
             <small>25 000 FCFA</small>
           </div>
-
         </div>
+
+        <div class="sale-form">
+          <label for="vente-date">Date</label>
+          <input type="date" id="vente-date">
+
+          <label for="vente-desc">Description / Client</label>
+          <input type="text" id="vente-desc" placeholder="Ex : Chaussure homme bleue">
+
+          <label for="vente-montant">Montant (FCFA)</label>
+          <input type="number" id="vente-montant" placeholder="Ex : 15000">
+
+          <label for="vente-mode">Mode de paiement</label>
+          <select id="vente-mode">
+            <option value="Cash">Cash</option>
+            <option value="Mobile Money">Mobile Money</option>
+            <option value="Autre">Autre</option>
+          </select>
+
+          <button id="btn-add-vente">Ajouter la vente</button>
+        </div>
+
+        <div class="sales-list" id="sales-list"></div>
       </div>
     </section>
 
-    <!-- PAGE DÉPENSES -->
+    <!-- DÉPENSES -->
     <section id="page-depenses" class="page">
       <h2>Dépenses</h2>
 
@@ -329,10 +422,9 @@
       <div class="expense-list" id="expense-list"></div>
     </section>
 
-    <!-- PAGE RÉSUMÉ -->
+    <!-- RÉSUMÉ -->
     <section id="page-resume" class="page">
       <h2>Résumé</h2>
-
       <div class="resume-card">
         <h2>Calcul automatique</h2>
 
@@ -353,7 +445,6 @@
     </section>
   </main>
 
-  <!-- NAVIGATION BASSE -->
   <nav class="nav">
     <button id="btn-ventes" class="active">Ventes</button>
     <button id="btn-depenses">Dépenses</button>
@@ -362,7 +453,7 @@
 </div>
 
 <script>
-  // Navigation simple -------------------------------------------------------
+  // ---------- Navigation ----------
   const pages = {
     ventes: document.getElementById("page-ventes"),
     depenses: document.getElementById("page-depenses"),
@@ -378,57 +469,110 @@
   function show(page) {
     Object.values(pages).forEach(p => p.classList.remove("active"));
     Object.values(buttons).forEach(b => b.classList.remove("active"));
-
     pages[page].classList.add("active");
     buttons[page].classList.add("active");
-
-    if (page === "resume") {
-      calculerResume();
-    }
+    if (page === "resume") calculerResume();
   }
 
   buttons.ventes.onclick = () => show("ventes");
   buttons.depenses.onclick = () => show("depenses");
   buttons.resume.onclick = () => show("resume");
 
-  // Ventes : nouvelle logique ----------------------------------------------
-  let ventes = JSON.parse(localStorage.getItem("ofc_ventes_v2")) || [];
-
-  function saveVentes() {
-    localStorage.setItem("ofc_ventes_v2", JSON.stringify(ventes));
+  // ---------- Utilitaires ----------
+  function todayISO() {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${d.getFullYear()}-${m}-${day}`;
   }
 
+  function formatMoney(v) {
+    return (v || 0).toLocaleString("fr-FR") + " FCFA";
+  }
+
+  // ---------- VENTES : nouvelle logique ----------
+  let ventes = JSON.parse(localStorage.getItem("ofc_ventes_v3") || "[]");
+
+  const venteDateEl = document.getElementById("vente-date");
+  const venteDescEl = document.getElementById("vente-desc");
+  const venteMontantEl = document.getElementById("vente-montant");
+  const venteModeEl = document.getElementById("vente-mode");
+  const btnAddVente = document.getElementById("btn-add-vente");
+  const salesList = document.getElementById("sales-list");
+
+  // date par défaut = aujourd'hui
+  venteDateEl.value = todayISO();
+
+  function saveVentes() {
+    localStorage.setItem("ofc_ventes_v3", JSON.stringify(ventes));
+  }
+
+  function renderVentes() {
+    salesList.innerHTML = "";
+    ventes.slice().reverse().forEach(v => {
+      const div = document.createElement("div");
+      div.className = "sale-item";
+      div.innerHTML = `
+        <div class="sale-item-main">
+          <span class="desc">${v.description || "Sans description"}</span>
+          <span class="amount">${formatMoney(v.montant)}</span>
+        </div>
+        <div class="sale-item-meta">
+          ${v.date || ""} — ${v.mode || ""}
+        </div>
+      `;
+      salesList.appendChild(div);
+    });
+  }
+
+  // Clic produit -> préremplit formulaire
   document.querySelectorAll(".product").forEach(prod => {
     prod.addEventListener("click", () => {
-      const name = prod.dataset.name;
-      const priceAttr = prod.dataset.price;
-      const price = Number(priceAttr || "0");
+      const name = prod.dataset.name || "";
+      const price = Number(prod.dataset.price || "0") || "";
 
-      if (!price || price <= 0) {
-        console.warn("Prix invalide pour le produit", name);
-        return;
-      }
+      venteDescEl.value = name;
+      venteMontantEl.value = price;
+      if (!venteDateEl.value) venteDateEl.value = todayISO();
+      venteModeEl.value = "Cash";
 
-      const sale = {
-        name,
-        price,
-        ts: Date.now()
-      };
-
-      ventes.push(sale);
-      saveVentes();
-
-      // feedback visuel
       prod.classList.add("clicked");
       setTimeout(() => prod.classList.remove("clicked"), 120);
-
-      calculerResume();
-      console.log("Vente enregistrée:", sale);
     });
   });
 
-  // Dépenses : identique mais plus propre ----------------------------------
-  let depenses = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
+  // Bouton ajouter la vente
+  btnAddVente.addEventListener("click", () => {
+    const date = venteDateEl.value || todayISO();
+    const desc = venteDescEl.value.trim();
+    const montant = Number(venteMontantEl.value);
+
+    if (!montant || montant <= 0) {
+      alert("Veuillez saisir un montant valide.");
+      return;
+    }
+
+    const vente = {
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      date,
+      description: desc || "Vente",
+      montant,
+      mode: venteModeEl.value || "Cash",
+      ts: Date.now()
+    };
+
+    ventes.push(vente);
+    saveVentes();
+    renderVentes();
+    calculerResume();
+
+    // reset partiel : on garde la date et le mode
+    venteDescEl.value = "";
+    venteMontantEl.value = "";
+  });
+
+  // ---------- DÉPENSES ----------
+  let depenses = JSON.parse(localStorage.getItem("ofc_depenses") || "[]");
 
   const montantInput = document.getElementById("depense-montant");
   const descInput = document.getElementById("depense-desc");
@@ -441,16 +585,17 @@
 
   function renderDepenses() {
     expenseList.innerHTML = "";
-    depenses.forEach(d => {
+    depenses.slice().reverse().forEach(d => {
       const item = document.createElement("div");
       item.className = "expense-item";
-      item.innerHTML = `<strong>${d.montant.toLocaleString()} FCFA</strong> — ${d.desc || "Sans description"}`;
+      item.innerHTML =
+        `<strong>${formatMoney(d.montant)}</strong> — ${d.desc || "Sans description"}`;
       expenseList.appendChild(item);
     });
   }
 
   btnAddDepense.addEventListener("click", () => {
-    const montant = Number(montantInput.value.trim());
+    const montant = Number(montantInput.value);
     const desc = descInput.value.trim();
 
     if (!montant || montant <= 0) {
@@ -472,46 +617,36 @@
     descInput.value = "";
   });
 
-  // Résumé : logique inspirée, CAC = 10% de l'IGS --------------------------
+  // ---------- RÉSUMÉ ----------
   function calculerResume() {
-    const ventesLS = JSON.parse(localStorage.getItem("ofc_ventes_v2")) || [];
-    const depensesLS = JSON.parse(localStorage.getItem("ofc_depenses")) || [];
+    const ventesLS = JSON.parse(localStorage.getItem("ofc_ventes_v3") || "[]");
+    const depensesLS = JSON.parse(localStorage.getItem("ofc_depenses") || "[]");
 
-    const totalVentes = ventesLS.reduce((sum, v) => sum + (v.price || 0), 0);
-    const totalDepenses = depensesLS.reduce((sum, d) => sum + (d.montant || 0), 0);
+    const totalVentes = ventesLS.reduce((s, v) => s + (v.montant || 0), 0);
+    const totalDepenses = depensesLS.reduce((s, d) => s + (d.montant || 0), 0);
 
     const benefice = totalVentes - totalDepenses;
 
-    // IGS = 5% du bénéfice (si bénéfice > 0)
-    const igs = benefice > 0 ? benefice * 0.05 : 0;
-
-    // CAC = 10% de l'IGS
-    const cac = igs * 0.10;
-
+    const igs = benefice > 0 ? benefice * 0.05 : 0;    // 5% du bénéfice
+    const cac = igs * 0.10;                            // 10% de l'IGS
     const precompte = igs + cac;
     const solde = benefice - precompte;
 
-    document.getElementById("res-ventes").textContent =
-      totalVentes.toLocaleString() + " FCFA";
-    document.getElementById("res-depenses").textContent =
-      totalDepenses.toLocaleString() + " FCFA";
-    document.getElementById("res-benefice").textContent =
-      benefice.toLocaleString() + " FCFA";
-    document.getElementById("res-igs").textContent =
-      igs.toLocaleString() + " FCFA";
-    document.getElementById("res-cac").textContent =
-      cac.toLocaleString() + " FCFA";
-    document.getElementById("res-precompte").textContent =
-      precompte.toLocaleString() + " FCFA";
-    document.getElementById("res-solde").textContent =
-      solde.toLocaleString() + " FCFA";
+    document.getElementById("res-ventes").textContent = formatMoney(totalVentes);
+    document.getElementById("res-depenses").textContent = formatMoney(totalDepenses);
+    document.getElementById("res-benefice").textContent = formatMoney(benefice);
+    document.getElementById("res-igs").textContent = formatMoney(igs);
+    document.getElementById("res-cac").textContent = formatMoney(cac);
+    document.getElementById("res-precompte").textContent = formatMoney(precompte);
+    document.getElementById("res-solde").textContent = formatMoney(solde);
   }
 
-  // Initialisation UI
+  // ---------- Init ----------
+  renderVentes();
   renderDepenses();
   calculerResume();
 
-  // Service Worker ---------------------------------------------------------
+  // ---------- Service Worker ----------
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("./service-worker.js")
