@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>OFC Starter – PWA minimale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Couleur de thème pour la barre d'adresse (Android, etc.) -->
+  <meta name="theme-color" content="#0f766e">
+
+  <!-- Lien vers le manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Icône de base (favicon pour l’onglet) -->
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      text-align: center;
+      padding: 24px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      max-width: 320px;
+    }
+    .icon-wrapper {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 16px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin: 8px 0;
+    }
+    p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+    .status {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    .tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      color: #bbf7d0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon-wrapper">
+      <!-- Icône PWA principale -->
+      <img src="icons/icon-192.png" alt="OFC Starter Icon">
+    </div>
+    <h1>OFC Starter</h1>
+    <p>PWA minimale chargée avec succès.</p>
+    <p class="status">Manifest + Service Worker doivent être visibles dans les outils de développement.</p>
+    <div class="tag">PWA OK – Étape 1</div>
+  </div>
+
+  <script>
+    // Enregistrement du Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(function (registration) {
+            console.log('Service Worker enregistré avec succès :', registration.scope);
+          })
+          .catch(function (error) {
+            console.error('Échec de l’enregistrement du Service Worker :', error);
+          });
+      });
+    } else {
+      console.warn('Service Worker non supporté par ce navigateur.');
+    }
+  </script>
+</body>
+</html>
 
