@@ -94,53 +94,6 @@
       margin-bottom: 10px;
     }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .product {
-      background: #111827;
-      padding: 8px;
-      border-radius: 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-
-    .product img {
-      width: 100%;
-      height: 90px;
-      object-fit: cover;
-      border-radius: 10px;
-      display: block;
-    }
-
-    .product span {
-      display: block;
-      margin-top: 6px;
-      font-size: 13px;
-      color: #e5e7eb;
-    }
-
-    .product small {
-      display: block;
-      font-size: 12px;
-      color: #93c5fd;
-      margin-top: 2px;
-    }
-
-    .product.clicked {
-      transform: scale(0.94);
-      background: #1f2937;
-    }
-
-    .sale-form {
-      margin-top: 4px;
-    }
-
     .sale-form label {
       display: block;
       font-size: 13px;
@@ -333,7 +286,7 @@
       flex-direction: column;
       gap: 14px;
     }
-    
+
     /* ===== Produits en scroll horizontal ===== */
 
     .products-scroll {
@@ -342,13 +295,14 @@
       padding: 10px 2px;
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
     }
-    
+
     .product-row {
       display: inline-flex;
       gap: 12px;
     }
-    
+
     .product {
       display: inline-block;
       width: 120px;
@@ -358,23 +312,24 @@
       border-radius: 14px;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
+      transition: transform 0.12s ease, background 0.12s ease;
+      scroll-snap-align: start;
     }
-    
+
     .product img {
       width: 100%;
       height: 90px;
       object-fit: cover;
       border-radius: 10px;
     }
-    
+
     .product span {
       display: block;
       margin-top: 6px;
       font-size: 13px;
       color: #e5e7eb;
     }
-    
+
     .product small {
       display: block;
       font-size: 12px;
@@ -382,7 +337,6 @@
       margin-top: 2px;
     }
 
-    
     /* Formulaire stable */
     .sale-form {
       background: #0f172a;
@@ -391,7 +345,7 @@
       box-shadow: 0 6px 16px rgba(0,0,0,0.4);
       position: relative;
     }
-    
+
     /* Liste des ventes scrollable */
     .sales-list-scroll {
       max-height: 260px;
@@ -404,25 +358,6 @@
     /* Effet zoom tactile */
     .product:active {
       transform: scale(0.92);
-    }
-    
-    /* Scroll horizontal intelligent */
-    .products-scroll {
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding-bottom: 8px;
-      white-space: nowrap;
-      scroll-snap-type: x mandatory;
-    }
-    
-    .product-row {
-      display: inline-flex;
-      gap: 12px;
-    }
-    
-    .product {
-      scroll-snap-align: start;
-      transition: transform 0.12s ease, background 0.12s ease;
     }
 
     .btn-reset {
@@ -438,15 +373,14 @@
       cursor: pointer;
       transition: 0.2s ease;
     }
-    
+
     .btn-reset:hover {
       background: #b91c1c;
     }
-    
+
     .btn-reset:active {
       transform: scale(0.96);
     }
-
   </style>
 </head>
 <body>
@@ -459,97 +393,97 @@
     <!-- VENTES -->
     <section id="page-ventes" class="page active">
       <h2>Ventes</h2>
-    
-      <div class="sales-container">
-    
-        <!-- Scroll Produits --><div class="products-scroll">
-        <div class="product-row">
-      
-          <div class="product" data-name="Chaussure homme" data-price="15000">
-            <img src="./products/man_shoes.webp" alt="">
-            <span>Chaussure homme</span>
-            <small>15 000 FCFA</small>
-          </div>
-      
-          <div class="product" data-name="Escarpin femme" data-price="20000">
-            <img src="./products/woman_shoes.jpeg" alt="">
-            <span>Escarpin femme</span>
-            <small>20 000 FCFA</small>
-          </div>
-      
-          <div class="product" data-name="Sac homme" data-price="15000">
-            <img src="./products/man_bag.webp" alt="">
-            <span>Sac homme</span>
-            <small>15 000 FCFA</small>
-          </div>
-      
-          <div class="product" data-name="Parfum homme" data-price="20000">
-            <img src="./products/man_perfum.webp" alt="">
-            <span>Parfum homme</span>
-            <small>20 000 FCFA</small>
-          </div>
-      
-          <div class="product" data-name="Sac femme" data-price="18000">
-            <img src="./products/woman_bag.webp" alt="">
-            <span>Sac femme</span>
-            <small>18 000 FCFA</small>
-          </div>
-      
-          <div class="product" data-name="Parfum femme" data-price="25000">
-            <img src="./products/woman_parfum.webp" alt="">
-            <span>Parfum femme</span>
-            <small>25 000 FCFA</small>
-          </div>
-      
-        </div>
-      </div>
 
-    
+      <div class="sales-container">
+
+        <!-- Scroll Produits -->
+        <div class="products-scroll">
+          <div class="product-row">
+
+            <div class="product" data-name="Chaussure homme" data-price="15000">
+              <img src="./products/man_shoes.webp" alt="">
+              <span>Chaussure homme</span>
+              <small>15 000 FCFA</small>
+            </div>
+
+            <div class="product" data-name="Escarpin femme" data-price="20000">
+              <img src="./products/woman_shoes.jpeg" alt="">
+              <span>Escarpin femme</span>
+              <small>20 000 FCFA</small>
+            </div>
+
+            <div class="product" data-name="Sac homme" data-price="15000">
+              <img src="./products/man_bag.webp" alt="">
+              <span>Sac homme</span>
+              <small>15 000 FCFA</small>
+            </div>
+
+            <div class="product" data-name="Parfum homme" data-price="20000">
+              <img src="./products/man_perfum.webp" alt="">
+              <span>Parfum homme</span>
+              <small>20 000 FCFA</small>
+            </div>
+
+            <div class="product" data-name="Sac femme" data-price="18000">
+              <img src="./products/woman_bag.webp" alt="">
+              <span>Sac femme</span>
+              <small>18 000 FCFA</small>
+            </div>
+
+            <div class="product" data-name="Parfum femme" data-price="25000">
+              <img src="./products/woman_parfum.webp" alt="">
+              <span>Parfum femme</span>
+              <small>25 000 FCFA</small>
+            </div>
+
+          </div>
+        </div>
+
         <!-- Formulaire stable -->
         <div class="sale-form">
           <label>Date</label>
           <input type="date" id="vente-date">
-    
+
           <label>Description / Client</label>
           <input type="text" id="vente-desc">
-    
+
           <label>Montant (FCFA)</label>
           <input type="number" id="vente-montant">
-    
+
           <label>Mode de paiement</label>
           <select id="vente-mode">
             <option value="Cash">Cash</option>
             <option value="Mobile Money">Mobile Money</option>
             <option value="Autre">Autre</option>
           </select>
-    
+
           <button id="btn-add-vente">Ajouter la vente</button>
         </div>
-    
+
         <!-- Liste scrollable des ventes -->
         <div class="sales-list-scroll">
           <div id="sales-list"></div>
         </div>
-    
+
       </div>
     </section>
 
     <!-- DÉPENSES -->
     <section id="page-depenses" class="page">
       <h2>Dépenses</h2>
-    
+
       <div class="expense-card">
         <h3>Ajouter une dépense</h3>
-    
+
         <label>Montant (FCFA)</label>
         <input id="depense-montant" type="number" placeholder="Ex : 1500">
-    
+
         <label>Description (optionnel)</label>
         <input id="depense-desc" type="text" placeholder="Ex : Transport">
-    
+
         <button id="btn-add-depense">Ajouter la dépense</button>
       </div>
-    
+
       <!-- Liste scrollable des dépenses -->
       <div class="expense-list" style="max-height:260px; overflow-y:auto; padding-right:6px;">
         <div id="expense-list"></div>
@@ -575,6 +509,7 @@
 
         <div class="resume-row"><span>Total précompte :</span><strong id="res-precompte">0 FCFA</strong></div>
         <div class="resume-row final"><span>Solde net :</span><strong id="res-solde">0 FCFA</strong></div>
+
         <button id="btn-reset-data" class="btn-reset">Réinitialiser toutes les données</button>
       </div>
     </section>
@@ -626,7 +561,7 @@
     return (v || 0).toLocaleString("fr-FR") + " FCFA";
   }
 
-  // ---------- VENTES : nouvelle logique ----------
+  // ---------- VENTES ----------
   let ventes = JSON.parse(localStorage.getItem("ofc_ventes_v3") || "[]");
 
   const venteDateEl = document.getElementById("vente-date");
@@ -666,20 +601,19 @@
     prod.addEventListener("click", () => {
       const name = prod.dataset.name || "";
       const price = Number(prod.dataset.price || "0") || "";
-  
+
       venteDescEl.value = name;
       venteMontantEl.value = price;
       venteModeEl.value = "Cash";
       if (!venteDateEl.value) venteDateEl.value = todayISO();
-  
+
       // Effet tactile
       if (navigator.vibrate) navigator.vibrate(8);
-  
+
       prod.classList.add("clicked");
       setTimeout(() => prod.classList.remove("clicked"), 120);
     });
   });
-
 
   // Bouton ajouter la vente
   btnAddVente.addEventListener("click", () => {
@@ -781,6 +715,40 @@
     document.getElementById("res-solde").textContent = formatMoney(solde);
   }
 
+  // ---------- Réinitialisation complète ----------
+  function resetAllData() {
+    const confirmReset = confirm(
+      "Voulez-vous vraiment tout réinitialiser ?\nToutes les données seront supprimées."
+    );
+    if (!confirmReset) return;
+
+    // Vider les tableaux en mémoire
+    ventes = [];
+    depenses = [];
+
+    // Mettre à jour le localStorage
+    saveVentes();
+    saveDepenses();
+
+    // Réinitialiser les formulaires
+    venteDateEl.value = todayISO();
+    venteDescEl.value = "";
+    venteMontantEl.value = "";
+    venteModeEl.value = "Cash";
+
+    montantInput.value = "";
+    descInput.value = "";
+
+    // Rafraîchir l'affichage
+    renderVentes();
+    renderDepenses();
+    calculerResume();
+
+    alert("Toutes les données ont été réinitialisées !");
+  }
+
+  document.getElementById("btn-reset-data").addEventListener("click", resetAllData);
+
   // ---------- Init ----------
   renderVentes();
   renderDepenses();
@@ -794,39 +762,7 @@
         .catch(err => console.error("Erreur SW:", err));
     });
   }
-
-  function resetAllData() {
-    const confirmReset = confirm(
-      "Voulez-vous vraiment tout réinitialiser ?\nToutes les données seront supprimées."
-    );
-  
-    if (!confirmReset) return;
-  
-    // 1. Effacer toutes les données stockées
-    localStorage.removeItem("ofc_ventes_v3");
-    localStorage.removeItem("ofc_depenses");
-  
-    // 2. Vider les tableaux en mémoire (si utilisés dans ton script)
-    ventes = [];
-    depenses = [];
-  
-    // 3. Effacer l'affichage des ventes
-    const ventesList = document.getElementById("ventes-list");
-    if (ventesList) ventesList.innerHTML = "";
-  
-    // 4. Effacer l'affichage des dépenses
-    const depensesList = document.getElementById("depenses-list");
-    if (depensesList) depensesList.innerHTML = "";
-  
-    // 5. Recalculer le résumé (donnera 0 partout)
-    calculerResume();
-  
-    alert("Toutes les données ont été réinitialisées !");
-  }
-
-  document.getElementById("btn-reset-data").addEventListener("click", resetAllData);
-
 </script>
-  
+
 </body>
 </html>
