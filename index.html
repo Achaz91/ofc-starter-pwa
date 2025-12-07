@@ -810,54 +810,89 @@
   }
 
   function exportAsTxt() {
-    const sales = JSON.parse(localStorage.getItem("sales") || "[]");
-    const expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+      const sales = JSON.parse(localStorage.getItem("sales") || "[]");
+      const expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+  
+      let txt = "=== OFC Starter – Rapport automatique ===\n\n";
+  
+      txt += "--- VENTES ---\n";
+      if (sales.length === 0) {
+          txt += "Aucune vente enregistrée.\n";
+      } else {
+          sales.forEach(s => {
+              txt += `• ${s.productName} – ${s.amount} FCFA (${s.date})\n`;
+          });
+      }
+  
+      txt += "\n--- DÉPENSES ---\n";
+      if (expenses.length === 0) {
+          txt += "Aucune dépense enregistrée.\n";
+      } else {
+          expenses.forEach(e => {
+              txt += `• ${e.amount} FCFA – ${e.description} (${e.date})\n`;
+          });
+      }
+  
+      txt += "\n--- RÉSUMÉ AUTOMATIQUE ---\n";
+      const totalSales = sales.reduce((s,x)=>s + Number(x.amount),0);
+      const totalExpenses = expenses.reduce((s,x)=>s + Number(x.amount),0);
+      const profit = totalSales - totalExpenses;
+      const IGS = Math.round(profit * 0.05);
+      const CAC = Math.round(IGS * 0.10);
+      const precompte = IGS + CAC;
+      const solde = profit - precompte;
+  
+      txt += `Total ventes : ${totalSales} FCFA\n`;
+      txt += `Total dépenses : ${totalExpenses} FCFA\n`;
+      txt += `Bénéfice brut : ${profit} FCFA\n`;
+      txt += `IGS (5%) : ${IGS} FCFA\n`;
+      txt += `CAC (10% de l'IGS) : ${CAC} FCFA\n`;
+      txt += `Total précompte : ${precompte} FCFA\n`;
+      txt += `Solde net : ${solde} FCFA\n`;
+  
+      const blob = new Blob([txt], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+  
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "ofc_starter_rapport.txt";
+      link.click();
+  }
 
-    let txt = "=== OFC Starter – Rapport automatique ===\n\n";
-
-    txt += "--- VENTES ---\n";
-    if (sales.length === 0) {
-        txt += "Aucune vente enregistrée.\n";
-    } else {
-        sales.forEach(s => {
-            txt += `• ${s.productName} – ${s.amount} FCFA (${s.date})\n`;
-        });
-    }
-
-    txt += "\n--- DÉPENSES ---\n";
-    if (expenses.length === 0) {
-        txt += "Aucune dépense enregistrée.\n";
-    } else {
-        expenses.forEach(e => {
-            txt += `• ${e.amount} FCFA – ${e.description} (${e.date})\n`;
-        });
-    }
-
-    txt += "\n--- RÉSUMÉ AUTOMATIQUE ---\n";
-    const totalSales = sales.reduce((s,x)=>s + Number(x.amount),0);
-    const totalExpenses = expenses.reduce((s,x)=>s + Number(x.amount),0);
-    const profit = totalSales - totalExpenses;
-    const IGS = Math.round(profit * 0.05);
-    const CAC = Math.round(IGS * 0.10);
-    const precompte = IGS + CAC;
-    const solde = profit - precompte;
-
-    txt += `Total ventes : ${totalSales} FCFA\n`;
-    txt += `Total dépenses : ${totalExpenses} FCFA\n`;
-    txt += `Bénéfice brut : ${profit} FCFA\n`;
-    txt += `IGS (5%) : ${IGS} FCFA\n`;
-    txt += `CAC (10% de l'IGS) : ${CAC} FCFA\n`;
-    txt += `Total précompte : ${precompte} FCFA\n`;
-    txt += `Solde net : ${solde} FCFA\n`;
-
-    const blob = new Blob([txt], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "ofc_starter_rapport.txt";
-    link.click();
-}
+  function shareOnWhatsApp() {
+      const sales = JSON.parse(localStorage.getItem("sales") || "[]");
+      const expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+  
+      let msg = `*OFC Starter – Résumé*\n\n`;
+  
+      msg += `*VENTES:*\n`;
+      if (sales.length === 0) msg += "_Aucune vente._\n";
+      else sales.forEach(s => msg += `• ${s.productName} – *${s.amount} FCFA* (${s.date})\n`);
+  
+      msg += `\n*DÉPENSES:*\n`;
+      if (expenses.length === 0) msg += "_Aucune dépense._\n";
+      else expenses.forEach(e => msg += `• ${e.amount} FCFA – ${e.description} (${e.date})\n`);
+  
+      msg += `\n*RÉSUMÉ AUTOMATIQUE*\n`;
+      const totalSales = sales.reduce((s,x)=>s + Number(x.amount),0);
+      const totalExpenses = expenses.reduce((s,x)=>s + Number(x.amount),0);
+      const profit = totalSales - totalExpenses;
+      const IGS = Math.round(profit * 0.05);
+      const CAC = Math.round(IGS * 0.10);
+      const precompte = IGS + CAC;
+      const solde = profit - precompte;
+  
+      msg += `• Total ventes : *${totalSales} FCFA*\n`;
+      msg += `• Total dépenses : *${totalExpenses} FCFA*\n`;
+      msg += `• Bénéfice brut : *${profit} FCFA*\n`;
+      msg += `• IGS (5%) : *${IGS} FCFA*\n`;
+      msg += `• CAC (10% IGS) : *${CAC} FCFA*\n`;
+      msg += `• Total précompte : *${precompte} FCFA*\n`;
+      msg += `• Solde net : *${solde} FCFA*\n`;
+  
+      const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+      window.open(url, "_blank");
+  }
 
 </script>
 
